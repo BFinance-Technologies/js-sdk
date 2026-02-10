@@ -26,6 +26,7 @@ import type {
   SetSpendingLimitsRequest,
   SetSpendingLimitsResponse,
 } from "./prepaidCards.types";
+import { IdempotencyOptions } from "../../types";
 
 export class PrepaidCardsService extends BaseService {
   getList(params?: PrepaidListParams) {
@@ -105,10 +106,15 @@ export class PrepaidCardsService extends BaseService {
     );
   }
 
-  topUp(cardId: string, payload: TopUpRequest) {
+  topUp(cardId: string, payload: TopUpRequest, options?: IdempotencyOptions) {
     return this.post<TopUpRequest, PrepaidlCardSimpleResponse>(
       ENDPOINTS.prepaidCards.topup(encodeURIComponent(cardId)),
       payload,
+      options?.idempotencyKey
+        ? {
+            headers: { "Idempotency-Key": options.idempotencyKey },
+          }
+        : undefined,
     );
   }
 
@@ -119,10 +125,19 @@ export class PrepaidCardsService extends BaseService {
     );
   }
 
-  withdrawFunds(cardId: string, payload: WithdrawFundsRequest) {
+  withdrawFunds(
+    cardId: string,
+    payload: WithdrawFundsRequest,
+    options?: IdempotencyOptions,
+  ) {
     return this.post<WithdrawFundsRequest, PrepaidlCardSimpleResponse>(
       ENDPOINTS.prepaidCards.withdraw(encodeURIComponent(cardId)),
       payload,
+      options?.idempotencyKey
+        ? {
+            headers: { "Idempotency-Key": options.idempotencyKey },
+          }
+        : undefined,
     );
   }
 
