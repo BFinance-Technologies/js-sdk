@@ -39,9 +39,11 @@ export class HttpClient {
   private includeBody: boolean;
   private includeHeaders: boolean;
 
+  private baseUrl: string = "https://business.bfinance.app";
+
   constructor(config: BFinanceConfig) {
     this.client = axios.create({
-      baseURL: config.baseUrl,
+      baseURL: this.baseUrl,
       timeout: config.timeoutMs ?? 3000,
       headers: {
         "Content-Type": "application/json",

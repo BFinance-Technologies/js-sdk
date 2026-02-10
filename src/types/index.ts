@@ -18,7 +18,6 @@ export type IdempotencyOptions = {
 };
 
 export type BFinanceConfig = {
-  baseUrl: string;
   apiToken: string;
   timeoutMs?: number;
   headers?: Record<string, string>;
