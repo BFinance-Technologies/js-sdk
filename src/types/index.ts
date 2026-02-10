@@ -9,13 +9,20 @@ export type HttpLoggingConfig = {
   includeHeaders?: boolean;
 };
 
-export interface BFinanceConfig {
-  baseUrl: string;
+export type RequestOptions<THeaders = Record<string, string>> = {
+  headers?: THeaders;
+};
+
+export type IdempotencyOptions = {
+  idempotencyKey: string;
+};
+
+export type BFinanceConfig = {
   apiToken: string;
   timeoutMs?: number;
   headers?: Record<string, string>;
 
   logging?: HttpLoggingConfig;
-}
+};
 
 export * from "./common";

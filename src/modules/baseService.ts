@@ -1,4 +1,5 @@
 import { HttpClient } from "../http/HttpClient";
+import { RequestOptions } from "../types";
 
 export class BaseService {
   protected readonly http: HttpClient;
@@ -10,23 +11,40 @@ export class BaseService {
   protected get<
     TRes,
     TParams extends Record<string, any> | undefined = undefined,
-  >(url: string, params?: TParams): Promise<TRes> {
+  >(url: string, params?: TParams, options?: RequestOptions): Promise<TRes> {
     return this.http.request<TRes, undefined, TParams>(
       "GET",
       url,
       undefined,
       params,
+      options,
     );
   }
 
   protected post<TReq = undefined, TRes = unknown>(
     url: string,
     data?: TReq,
+    options?: RequestOptions,
   ): Promise<TRes> {
-    return this.http.request<TRes, TReq, undefined>("POST", url, data);
+    return this.http.request<TRes, TReq, undefined>(
+      "POST",
+      url,
+      data,
+      undefined,
+      options,
+    );
   }
 
-  protected delete<TRes = unknown>(url: string): Promise<TRes> {
-    return this.http.request<TRes, undefined, undefined>("DELETE", url);
+  protected delete<TRes = unknown>(
+    url: string,
+    options?: RequestOptions,
+  ): Promise<TRes> {
+    return this.http.request<TRes, undefined, undefined>(
+      "DELETE",
+      url,
+      undefined,
+      undefined,
+      options,
+    );
   }
 }

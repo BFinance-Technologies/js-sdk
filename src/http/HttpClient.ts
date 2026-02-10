@@ -4,7 +4,12 @@ import axios, {
   AxiosRequestConfig,
   AxiosResponse,
 } from "axios";
-import type { BFinanceConfig, HttpLogLevel, HttpLogger } from "../types";
+import type {
+  BFinanceConfig,
+  HttpLogLevel,
+  HttpLogger,
+  RequestOptions,
+} from "../types";
 import { HttpError, NetworkError } from "./HttpError";
 
 type RequestMeta = {
@@ -34,9 +39,11 @@ export class HttpClient {
   private includeBody: boolean;
   private includeHeaders: boolean;
 
+  private baseUrl: string = "https://business.bfinance.app";
+
   constructor(config: BFinanceConfig) {
     this.client = axios.create({
-      baseURL: config.baseUrl,
+      baseURL: this.baseUrl,
       timeout: config.timeoutMs ?? 3000,
       headers: {
         "Content-Type": "application/json",
@@ -135,6 +142,7 @@ export class HttpClient {
     url: string,
     data?: TReq,
     params?: TParams,
+    options?: RequestOptions,
   ): Promise<TRes> {
     try {
       const res = await this.client.request({
@@ -142,6 +150,9 @@ export class HttpClient {
         url,
         data,
         params,
+        headers: {
+          ...(options?.headers ?? {}),
+        },
       });
 
       const body = res.data as any;
