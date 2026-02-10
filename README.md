@@ -1,7 +1,6 @@
-# bfinance SDK
+# BFinance SDK
 
-The BFinance SDK allows you to integrate financial and airport services into your app.
-The SDK provides convenient methods for working with cards, eSIMs, airports, lounges, QR payments, flights, and useful utilities.
+This SDK allows you to integrate BFinance Business services into your app.
 
 ## Installation
 
