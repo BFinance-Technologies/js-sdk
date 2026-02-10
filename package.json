@@ -1,6 +1,6 @@
 {
-  "name": "sdk",
-  "version": "1.0.0",
+  "name": "@bfinance/sdk",
+  "version": "0.0.1",
   "description": "",
   "homepage": "https://github.com/BFinance-Technologies/js-sdk#readme",
   "bugs": {
