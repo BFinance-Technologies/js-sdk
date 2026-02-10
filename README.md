@@ -32,6 +32,15 @@ Config fields
 - `apiToken` (required) — Bearer token
 - `timeoutMs` (optional) — request timeout in ms
 - `headers` (optional) — custom headers
+- `logging` (optional) — request/response logging
+
+```ts
+logging: {
+    level: "info",
+    includeBody: false,
+    includeHeaders: false,
+},
+```
 
 - ### Authentication
 
@@ -86,8 +95,6 @@ These errors occur when the request cannot be completed due to network or client
 
 #### 3) Recommended error handling pattern
 
-**HttpError**
-
 ```ts
 {
   "statusCode": number;
@@ -97,16 +104,51 @@ These errors occur when the request cannot be completed due to network or client
 }
 ```
 
+###### **HttpError** (API responded with 4xx/5xx)
+
+###### Thrown when API returns non-2xx status code.
+
+- statusCode — HTTP status code
+- message — readable error message
+- raw — raw response body (if any)
+
+###### **NetworkError** (no valid API response)
+
+###### Thrown for network/client issues:
+
+- timeouts
+- DNS/connectivity issues
+- connection resets
+- TLS errors
+
 ```ts
+import { HttpError, NetworkError } from "@bfinance/sdk";
+
 try {
-  const customer = await client.customers.getCustomerById("123");
-} catch (err: HttpError) {
-  if (err.statusCode) {
-    // HTTP error
+  const customer = await client.customers.getById("123");
+} catch (err) {
+  if (err instanceof HttpError) {
+    console.log("HTTP error:", err.statusCode, err.message, err.details);
+  } else if (err instanceof NetworkError) {
+    console.log("Network error:", err.message, err.details);
   } else {
-    // network / client error
+    console.log("Unknown error:", err);
   }
 }
+```
+
+#### 4) Logging (interceptors)
+
+```ts
+const client = new BFinance({
+  baseUrl: "https://business.bfinance.app",
+  apiToken: "YOUR_BEARER_TOKEN",
+  logging: {
+    level: "info", // "none" | "error" | "info" | "debug"
+    includeBody: false,
+    includeHeaders: false,
+  },
+});
 ```
 
 ## Card Management
