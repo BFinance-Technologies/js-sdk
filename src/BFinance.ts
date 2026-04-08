@@ -8,6 +8,8 @@ import { CustomersService } from "./modules/customers/customers.service";
 import { VirtualAccountsService } from "./modules/virtualAccounts/virtualAccounts.service";
 import { DisputesService } from "./modules/disputes/disputes.service";
 import { EsimService } from "./modules/esim/esim.service";
+import { BalanceService } from "./modules/balance/balance.service";
+import { FinanceService } from "./modules/finance/finance.service";
 
 export class BFinance {
   public readonly prepaidCards: PrepaidCardsService;
@@ -17,6 +19,8 @@ export class BFinance {
   public readonly virtualAccounts: VirtualAccountsService;
   public readonly disputes: DisputesService;
   public readonly esim: EsimService;
+  public readonly balance: BalanceService;
+  public readonly finance: FinanceService;
   public readonly utils: UtilsService;
 
   constructor(config: BFinanceConfig) {
@@ -29,6 +33,8 @@ export class BFinance {
     this.virtualAccounts = new VirtualAccountsService(http);
     this.disputes = new DisputesService(http);
     this.esim = new EsimService(http);
+    this.balance = new BalanceService(http);
+    this.finance = new FinanceService(http);
     this.utils = new UtilsService(http);
   }
 }

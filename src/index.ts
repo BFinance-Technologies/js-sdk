@@ -18,4 +18,6 @@ export * from "./modules/customers/customers.types";
 export * from "./modules/virtualAccounts/virtualAccounts.types";
 export * from "./modules/disputes/disputes.types";
 export * from "./modules/esim/esim.types";
+export * from "./modules/balance/balance.types";
+export * from "./modules/finance/finance.types";
 export * from "./modules/utils/utils.types";

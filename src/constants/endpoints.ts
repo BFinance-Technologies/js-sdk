@@ -80,4 +80,12 @@ export const ENDPOINTS = {
     validateIban: `${API_PREFIX}/utils/validateIban`,
     bankBySwift: `${API_PREFIX}/utils/getBankBySwift`,
   },
+
+  balance: {
+    get: `${API_PREFIX}/balance`,
+  },
+
+  finance: {
+    deposit: `${API_PREFIX}/finance/deposit`,
+  },
 } as const;
