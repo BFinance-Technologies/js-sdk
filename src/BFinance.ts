@@ -1,6 +1,6 @@
 import { BFinanceConfig } from "./types";
 import { HttpClient } from "./http/HttpClient";
-import { PrepaidCardsService } from "./modules/prepaidCards/prepaidCards.service";
+import { CardsService } from "./modules/cards/cards.service";
 import { UtilsService } from "./modules/utils/utils.service";
 import { BudgetCardsService } from "./modules/budgetCards/budgetCards.service";
 import { PhysicalCardsService } from "./modules/physicalCards/physicalCards.service";
@@ -12,7 +12,7 @@ import { BalanceService } from "./modules/balance/balance.service";
 import { FinanceService } from "./modules/finance/finance.service";
 
 export class BFinance {
-  public readonly prepaidCards: PrepaidCardsService;
+  public readonly cards: CardsService;
   public readonly budgetCards: BudgetCardsService;
   public readonly physicalCards: PhysicalCardsService;
   public readonly customers: CustomersService;
@@ -26,7 +26,7 @@ export class BFinance {
   constructor(config: BFinanceConfig) {
     const http = new HttpClient(config);
 
-    this.prepaidCards = new PrepaidCardsService(http);
+    this.cards = new CardsService(http);
     this.budgetCards = new BudgetCardsService(http);
     this.physicalCards = new PhysicalCardsService(http);
     this.customers = new CustomersService(http);

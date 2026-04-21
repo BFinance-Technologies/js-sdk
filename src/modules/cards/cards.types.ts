@@ -6,32 +6,46 @@ import {
   PaginationParams,
 } from "../../types";
 
-export type PrepaidCardId = Id;
+export type CardId = Id;
 
-export type PrepaidCardItem = {
-  id: PrepaidCardId;
+export type CardItem = {
+  id: CardId;
   maskedCardNumber: string;
   currency: string;
   status: string;
   externalCardId: string;
+  cardBalance: number;
+  label: string;
+  brand: string;
+  cardHolder: CardHolder;
+  cardType: string;
 };
 
-export type GetPrepaidCardsResponse = ApiResponse<{
-  cards: PrepaidCardItem[];
+export type GetCardsResponse = ApiResponse<{
+  cards: CardItem[];
   page: number;
   limit: number;
+  totalPages: number;
 }>;
 
-export type IssuePrepaidCardRequst = {
+type IssueCardConfiguration = {
+  displayName?: string;
+  address?: string;
+};
+
+export type IssueCardRequst = {
   typeId: string;
   initialBalance: number;
   firstName: string;
   lastName: string;
+  externalId: string;
   label?: string;
+  customerId?: string;
+  configuration?: IssueCardConfiguration;
 };
 
-export type IssuedPrepaidCard = {
-  id: PrepaidCardId;
+export type IssuedCard = {
+  id: CardId;
   cardNumber: string;
   cardExpire: string;
   cardCVC: string;
@@ -42,17 +56,17 @@ export type IssuedPrepaidCard = {
   label: string;
 };
 
-export type IssuePrepaidCardResponse = ApiResponse<{
-  card: IssuedPrepaidCard;
+export type IssueCardResponse = ApiResponse<{
+  card: IssuedCard;
 }>;
 
-export type ReissuePrepaidCardRequest = {
-  cardId: PrepaidCardId;
+export type ReissueCardRequest = {
+  cardId: CardId;
   initialBalance: number;
 };
 
-export type ReissuedPrepaidCard = {
-  id: PrepaidCardId;
+export type ReissuedCard = {
+  id: CardId;
   cardExpire: string;
   cardBalance: number;
   currency: string;
@@ -61,29 +75,39 @@ export type ReissuedPrepaidCard = {
   label: string;
 };
 
-export type ReissuePrepaidCardResponse = ApiResponse<{
-  card: ReissuedPrepaidCard;
+export type ReissueCardResponse = ApiResponse<{
+  card: ReissuedCard;
 }>;
 
-export type PrepaidCardBalance = {
+export type CardBalance = {
   value: number;
   currency: string;
 };
 
-export type PrepaidCardSensitive = {
+export type CardSensitive = {
   number: string;
   expire: string;
   cvc: string;
 };
 
-export type GetPrepaidCardDetailsResponse = ApiResponse<{
-  id: PrepaidCardId;
+export type CardHolder = {
+  firstName: string;
+  lastName: string;
+  customerId: string;
+};
+
+export type GetCardDetailsResponse = ApiResponse<{
+  id: CardId;
   maskedCardNumber: string;
-  sensetive: PrepaidCardSensitive;
+  sensetive: CardSensitive;
   currency: string;
   status: string;
   externalCardId: string;
-  balance: PrepaidCardBalance;
+  balance: CardBalance;
+  label: string;
+  cardHolder: CardHolder;
+  email: string;
+  phone: string;
 }>;
 
 export type CardTransaction = {
@@ -99,11 +123,11 @@ export type CardTransaction = {
   declineReason: string | null;
 };
 
-export type GetPrepaidCardTransactionsResponse = ApiResponse<{
+export type GetCardTransactionsResponse = ApiResponse<{
   transactions: CardTransaction[];
 }>;
 
-export type GetPrepaidCardSensitiveResponse = ApiResponse<{
+export type GetCardSensitiveResponse = ApiResponse<{
   number: string;
   expire: string;
   cvc: string;
@@ -111,29 +135,30 @@ export type GetPrepaidCardSensitiveResponse = ApiResponse<{
 
 export type UpdateEmailRequest = { email: string };
 export type UpdatePhoneRequest = { phone: string };
-export type TopUpRequest = { amount: number };
+export type TopUpRequest = { amount: number; note?: string };
 export type SetPinRequest = { pin: string };
 export type WithdrawFundsRequest = { amount: number };
-export type ApproveTransactionRequest = { actionId: string };
+export type UpdateVirtualCardArtRequest = { cardArtId: string };
 
-export type GenerateTopUpAddressParams = {
-  currency: string;
-  network: string;
+export type UpdateVirtualCardArtResponse = ApiResponse<{}>;
+
+export type GetAvailableCardTypes = {
+  types: {
+    id: string;
+    name: string;
+    cardCurrency: string;
+    price: string;
+    brand: "visa" | (string & {});
+  }[];
 };
+
+export type GetAvailableCardTypesResponse = ApiResponse<GetAvailableCardTypes>;
 
 export type GenerateTopUpAddressAmount = {
   min: number;
   max: number;
   fee: number;
 };
-
-export type GenerateTopUpAddressResponse = ApiResponse<{
-  address: string;
-  network: string;
-  currency: string;
-  qrImage: string;
-  amount: GenerateTopUpAddressAmount;
-}>;
 
 export type GetSpendingLimitsItem = {
   limit: number;
@@ -158,7 +183,13 @@ export type GetSpendingLimitsResponse = ApiResponse<{
 }>;
 
 export type SetSpendingLimitsRequest = {
-  type: string;
+  type:
+    | "ecommerce-daily"
+    | "ecommerce-monthly"
+    | "ecommerce-transaction"
+    | "pos-daily"
+    | "pos-monthly"
+    | "pos-transaction";
   limit: number;
 };
 
@@ -167,7 +198,11 @@ export type SetSpendingLimitsResponse = ApiResponse<{
   limit: number;
 }>;
 
-export type PrepaidListParams = PaginationParams;
-export type PrepaidTranstactionParams = PaginationParams;
+export type CardsListParams = PaginationParams & {
+  query?: string;
+  customerIds?: string;
+  statuses?: "active" | "frozen" | "pending" | (string & {});
+};
+export type TranstactionParams = PaginationParams;
 
-export type PrepaidlCardSimpleResponse = MessageResponse;
+export type CardSimpleResponse = MessageResponse;

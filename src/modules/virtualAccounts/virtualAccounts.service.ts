@@ -5,12 +5,30 @@ import type {
   GetVirtualAccountEligibility,
   CreateVirtualAccountRequest,
   CreateVirtualAccountResponse,
+  SupportedCurrenciesReponse,
+  ListVirtualAccountsResponse,
+  GetVirtualAccountActivityParams,
+  GetVirtualAccountActivityResponse,
+  CloseVirtualAccountResponse,
 } from "./virtualAccounts.types";
 
 export class VirtualAccountsService extends BaseService {
-  getList(customerId: string) {
-    return this.get<GetVirtualAccountsResponse>(
-      ENDPOINTS.virtualAccounts.list(encodeURIComponent(customerId)),
+  getList() {
+    return this.get<ListVirtualAccountsResponse>(
+      ENDPOINTS.virtualAccounts.list,
+    );
+  }
+
+  getSupportedCurrencies() {
+    return this.get<SupportedCurrenciesReponse>(
+      ENDPOINTS.virtualAccounts.getSupportedCurrencies,
+    );
+  }
+
+  create(customerId: string, payload: CreateVirtualAccountRequest) {
+    return this.post<CreateVirtualAccountRequest, CreateVirtualAccountResponse>(
+      ENDPOINTS.virtualAccounts.create(encodeURIComponent(customerId)),
+      payload,
     );
   }
 
@@ -20,10 +38,37 @@ export class VirtualAccountsService extends BaseService {
     );
   }
 
-  create(customerId: string, payload: CreateVirtualAccountRequest) {
-    return this.post<CreateVirtualAccountRequest, CreateVirtualAccountResponse>(
-      ENDPOINTS.virtualAccounts.create(encodeURIComponent(customerId)),
-      payload,
+  getAccounts(customerId: string) {
+    return this.get<GetVirtualAccountsResponse>(
+      ENDPOINTS.virtualAccounts.getVirtualAccounts(
+        encodeURIComponent(customerId),
+      ),
+    );
+  }
+
+  getActivity(
+    customerId: string,
+    virtualAccountId: string,
+    params: GetVirtualAccountActivityParams,
+  ) {
+    return this.get<
+      GetVirtualAccountActivityResponse,
+      GetVirtualAccountActivityParams
+    >(
+      ENDPOINTS.virtualAccounts.getVirtualAccountActivity(
+        encodeURIComponent(customerId),
+        encodeURIComponent(virtualAccountId),
+      ),
+      params,
+    );
+  }
+
+  close(customerId: string, virtualAccountId: string) {
+    return this.post<CloseVirtualAccountResponse>(
+      ENDPOINTS.virtualAccounts.close(
+        encodeURIComponent(customerId),
+        encodeURIComponent(virtualAccountId),
+      ),
     );
   }
 }

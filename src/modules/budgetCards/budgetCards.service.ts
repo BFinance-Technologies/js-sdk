@@ -13,10 +13,22 @@ import type {
 } from "./budgetCards.types";
 
 export class BudgetCardsService extends BaseService {
+  getById(cardId: string) {
+    return this.get<BudgetCardByIdResponse>(
+      ENDPOINTS.budgetCards.byId(encodeURIComponent(cardId)),
+    );
+  }
+
   issue(payload: IssueBudgetCardRequest) {
     return this.post<IssueBudgetCardRequest, IssueBudgetCardResponse>(
       ENDPOINTS.budgetCards.issue,
       payload,
+    );
+  }
+
+  getSensitive(cardId: string) {
+    return this.get<BudgetCardSensitiveResponse>(
+      ENDPOINTS.budgetCards.sensitive(encodeURIComponent(cardId)),
     );
   }
 
@@ -29,18 +41,6 @@ export class BudgetCardsService extends BaseService {
   unfreeze(cardId: string) {
     return this.post<undefined, BudgetCardSimpleResponse>(
       ENDPOINTS.budgetCards.unfreeze(encodeURIComponent(cardId)),
-    );
-  }
-
-  deleteCard(cardId: string) {
-    return this.delete<BudgetCardSimpleResponse>(
-      ENDPOINTS.budgetCards.delete(encodeURIComponent(cardId)),
-    );
-  }
-
-  getById(cardId: string) {
-    return this.get<BudgetCardByIdResponse>(
-      `/external/api/budget-cards/${encodeURIComponent(cardId)}`,
     );
   }
 
@@ -58,6 +58,13 @@ export class BudgetCardsService extends BaseService {
     );
   }
 
+  updatePhoneNumber(cardId: string, payload: UpdateBudgetCardPhoneRequest) {
+    return this.post<UpdateBudgetCardPhoneRequest, BudgetCardSimpleResponse>(
+      ENDPOINTS.budgetCards.phone(encodeURIComponent(cardId)),
+      payload,
+    );
+  }
+
   setVelocityLimits(cardId: string, payload: SetVelocityLimitsRequest) {
     return this.post<SetVelocityLimitsRequest, BudgetCardSimpleResponse>(
       ENDPOINTS.budgetCards.velocity(encodeURIComponent(cardId)),
@@ -65,16 +72,9 @@ export class BudgetCardsService extends BaseService {
     );
   }
 
-  getSensitive(cardId: string) {
-    return this.get<BudgetCardSensitiveResponse>(
-      ENDPOINTS.budgetCards.sensitive(encodeURIComponent(cardId)),
-    );
-  }
-
-  updatePhoneNumber(cardId: string, payload: UpdateBudgetCardPhoneRequest) {
-    return this.post<UpdateBudgetCardPhoneRequest, BudgetCardSimpleResponse>(
-      ENDPOINTS.budgetCards.phone(encodeURIComponent(cardId)),
-      payload,
+  deleteCard(cardId: string) {
+    return this.delete<BudgetCardSimpleResponse>(
+      ENDPOINTS.budgetCards.delete(encodeURIComponent(cardId)),
     );
   }
 }

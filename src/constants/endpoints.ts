@@ -1,31 +1,30 @@
 const API_PREFIX = "/external/api";
 
 export const ENDPOINTS = {
-  prepaidCards: {
-    list: `${API_PREFIX}/prepaid-cards/list`,
-    issue: `${API_PREFIX}/prepaid-cards/issue`,
-    reissue: `${API_PREFIX}/prepaid-cards/reissue`,
-    byId: (id: string) => `${API_PREFIX}/prepaid-cards/${id}`,
-    transactions: (id: string) =>
-      `${API_PREFIX}/prepaid-cards/${id}/transactions`,
-    sensitive: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/sensetive`,
-    freeze: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/freeze`,
-    unfreeze: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/unfreeze`,
-    delete: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/delete`,
-    email: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/email`,
-    phone: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/phone`,
-    pin: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/pin`,
-    topup: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/topup`,
-    withdraw: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/withdraw`,
-    approveTransaction: (id: string) =>
-      `${API_PREFIX}/prepaid-cards/${id}/transactions/approve`,
-    address: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/address`,
-    limits: (id: string) => `${API_PREFIX}/prepaid-cards/${id}/limits`,
+  cards: {
+    details: (id: string) => `${API_PREFIX}/cards/${id}`,
+    list: `${API_PREFIX}/cards/list`,
+    issue: `${API_PREFIX}/cards/issue`,
+    reissue: `${API_PREFIX}/cards/reissue`,
+    transactions: (id: string) => `${API_PREFIX}/cards/${id}/transactions`,
+    sensitive: (id: string) => `${API_PREFIX}/cards/${id}/sensetive`,
+    freeze: (id: string) => `${API_PREFIX}/cards/${id}/freeze`,
+    unfreeze: (id: string) => `${API_PREFIX}/cards/${id}/unfreeze`,
+    delete: (id: string) => `${API_PREFIX}/cards/${id}/delete`,
+    topup: (id: string) => `${API_PREFIX}/cards/${id}/topup`,
+    withdraw: (id: string) => `${API_PREFIX}/cards/${id}/withdraw`,
+    email: (id: string) => `${API_PREFIX}/cards/${id}/email`,
+    phone: (id: string) => `${API_PREFIX}/cards/${id}/phone`,
+    pin: (id: string) => `${API_PREFIX}/cards/${id}/pin`,
+    updateVirtualCardArt: (id: string) => `${API_PREFIX}/cards/${id}/updateArt`,
+    getAvailableCardTypes: `${API_PREFIX}/cards/types`,
+    limits: (id: string) => `${API_PREFIX}/cards/${id}/limits`,
   },
 
   budgetCards: {
-    issue: `${API_PREFIX}/budget-cards/issue`,
     byId: (id: string) => `${API_PREFIX}/budget-cards/${id}`,
+    issue: `${API_PREFIX}/budget-cards/issue`,
+    sensitive: (id: string) => `${API_PREFIX}/budget-cards/${id}/sensitive`,
     freeze: (id: string) => `${API_PREFIX}/budget-cards/${id}/freeze`,
     unfreeze: (id: string) => `${API_PREFIX}/budget-cards/${id}/unfreeze`,
     delete: (id: string) => `${API_PREFIX}/budget-cards/${id}/delete`,
@@ -33,7 +32,6 @@ export const ENDPOINTS = {
     email: (id: string) => `${API_PREFIX}/budget-cards/${id}/email`,
     phone: (id: string) => `${API_PREFIX}/budget-cards/${id}/phone`,
     velocity: (id: string) => `${API_PREFIX}/budget-cards/${id}/velocity`,
-    sensitive: (id: string) => `${API_PREFIX}/budget-cards/${id}/sensitive`,
   },
 
   physicalCards: {
@@ -42,18 +40,33 @@ export const ENDPOINTS = {
   },
 
   customers: {
-    entry: `${API_PREFIX}/customers`,
-    sumsub: `${API_PREFIX}/customers/sumsub`,
-    byId: (id: string) => `${API_PREFIX}/customers/${id}`,
-    requestAccess: (id: string) => `${API_PREFIX}/customers/${id}/request`,
+    create: `${API_PREFIX}/customers`,
+    getById: (id: string) => `${API_PREFIX}/customers/${id}`,
+    delete: (id: string) => `${API_PREFIX}/customers/${id}`,
+    requestFeatureAccess: (id: string) =>
+      `${API_PREFIX}/customers/${id}/request`,
+    listCustomerQuestionnaires: (id: string) =>
+      `${API_PREFIX}/customers/${id}/questionnaires`,
+    customerQuestionnaireDetails: (id: string, questionnaireId: string) =>
+      `${API_PREFIX}/customers/${id}/questionnaires/${questionnaireId}`,
+    submitQuestionnaireAnswers: (id: string, questionnaireId: string) =>
+      `${API_PREFIX}/customers/${id}/questionnaires/${questionnaireId}/submit`,
+    getSumsubToken: (id: string) => `${API_PREFIX}/customers/${id}/sumsub`,
   },
 
   virtualAccounts: {
-    list: (customerId: string) => `${API_PREFIX}/virtual-account/${customerId}`,
-    eligibility: (customerId: string) =>
-      `${API_PREFIX}/virtual-account/${customerId}/eligibility`,
+    list: `${API_PREFIX}/virtual-account/list`,
+    getSupportedCurrencies: `${API_PREFIX}/virtual-account/currencies`,
     create: (customerId: string) =>
       `${API_PREFIX}/virtual-account/${customerId}/create`,
+    eligibility: (customerId: string) =>
+      `${API_PREFIX}/virtual-account/${customerId}/eligibility`,
+    getVirtualAccounts: (customerId: string) =>
+      `${API_PREFIX}/virtual-account/${customerId}`,
+    getVirtualAccountActivity: (customerId: string, virtualAccountId: string) =>
+      `${API_PREFIX}/virtual-account/${customerId}/${virtualAccountId}/activity`,
+    close: (customerId: string, virtualAccountId: string) =>
+      `${API_PREFIX}/virtual-account/${customerId}/${virtualAccountId}/close`,
   },
 
   disputes: {
@@ -79,6 +92,9 @@ export const ENDPOINTS = {
     mcc: `${API_PREFIX}/utils/mcc`,
     validateIban: `${API_PREFIX}/utils/validateIban`,
     bankBySwift: `${API_PREFIX}/utils/getBankBySwift`,
+    searchAirports: `${API_PREFIX}/utils/flights/airports/search`,
+    searchNearbyAirports: `${API_PREFIX}/utils/flights/airports/nearby`,
+    flightInfo: `${API_PREFIX}/utils/flights/info`,
   },
 
   balance: {
