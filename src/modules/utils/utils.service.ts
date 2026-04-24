@@ -8,30 +8,57 @@ import type {
   GetMccDescriptionRequest,
   ValidateIbanRequest,
   GetBankBySwiftRequest,
+  SearchAirportsParams,
+  SearchAirportsResponse,
+  SearchNearbyAirportsParams,
+  SearchNearbyAirportsResponse,
+  FlightInfoParams,
+  FlightDataResponse,
 } from "./utils.types";
 
 export class UtilsService extends BaseService {
-  getMccDescription(mcc?: string) {
-    const payload = omitUndefined<GetMccDescriptionRequest>({ mcc });
+  getMccDescription(payload?: GetMccDescriptionRequest) {
+    const body = payload ?? {};
     return this.post<GetMccDescriptionRequest, GetMccDescriptionResponse>(
       ENDPOINTS.utils.mcc,
-      payload,
+      body,
     );
   }
 
-  validateIban(iban?: string) {
-    const payload = omitUndefined<ValidateIbanRequest>({ iban });
+  validateIban(payload?: ValidateIbanRequest) {
+    const body = payload ?? {};
     return this.post<ValidateIbanRequest, ValidateIbanResponse>(
       ENDPOINTS.utils.validateIban,
-      payload,
+      body,
     );
   }
 
-  getBankBySwift(swift?: string) {
-    const payload = omitUndefined<GetBankBySwiftRequest>({ swift });
+  getBankBySwift(payload?: GetBankBySwiftRequest) {
+    const body = payload ?? {};
     return this.post<GetBankBySwiftRequest, GetBankBySwiftResponse>(
       ENDPOINTS.utils.bankBySwift,
-      payload,
+      body,
+    );
+  }
+
+  searchAirports(params: SearchAirportsParams) {
+    return this.get<SearchAirportsResponse, SearchAirportsParams>(
+      ENDPOINTS.utils.searchAirports,
+      params,
+    );
+  }
+
+  findNearbyAirports(params: SearchNearbyAirportsParams) {
+    return this.get<SearchNearbyAirportsResponse, SearchNearbyAirportsParams>(
+      ENDPOINTS.utils.searchNearbyAirports,
+      params,
+    );
+  }
+
+  flightInfo(params: FlightInfoParams) {
+    return this.get<FlightDataResponse, FlightInfoParams>(
+      ENDPOINTS.utils.flightInfo,
+      params,
     );
   }
 }

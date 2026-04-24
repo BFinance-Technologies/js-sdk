@@ -11,7 +11,7 @@ export type {
 
 export * from "./http/HttpError";
 
-export * from "./modules/prepaidCards/prepaidCards.types";
+export * from "./modules/cards/cards.types";
 export * from "./modules/budgetCards/budgetCards.types";
 export * from "./modules/physicalCards/physicalCards.types";
 export * from "./modules/customers/customers.types";

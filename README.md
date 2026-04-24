@@ -162,11 +162,45 @@ The SDK provides card management through three modules:
 
 ---
 
-### Prepaid Cards (`client.prepaidCards`)
+### Cards (`client.cards`)
 
 #### Available methods
 
-- `prepaidCards.getList(params?)` — get a paginated list of cards
+- `cards.getDetails(cardId: string)` — retrieve details of a specific card by its ID or external ID.
+
+**Response**
+
+```ts
+{
+  "status": string;
+  "data": {
+    "id": string;
+    "maskedCardNumber": string;
+    "sensetive": {
+      "number": string;
+      "expire": string;
+      "cvc": string;
+    };
+    "currency": string;
+    "status": string;
+    "externalCardId": string;
+    "balance": {
+      "value": number;
+      "currency": string;
+    };
+    "label": string;
+    "cardHolder": {
+      "firstName": string;
+      "lastName": string;
+      "customerId": string;
+    };
+    "email": string;
+    "phone": string;
+  }
+}
+```
+
+- `cards.getList(params?)` — get a paginated list of cards
 
 **Params**
 
@@ -198,7 +232,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.issue(payload)` — issue a new card
+- `cards.issue(payload)` — issue a new card
 
 **Payload**
 
@@ -209,6 +243,11 @@ The SDK provides card management through three modules:
   "firstName": string;
   "lastName": string;
   "label"?: string; // optional
+  "customerId"?: string;
+  "configuration"?: {
+    "displayName"?: string;
+    "address"?: string;
+  };
 }
 ```
 
@@ -233,7 +272,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.reissue(payload)` — reissue an existing card
+- `cards.reissue(payload)` — reissue an existing card
 
 **Payload**
 
@@ -265,33 +304,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.getDetails(cardId: string)` — get card details by ID
-
-**Response**
-
-```ts
-{
-  "status": string;
-  "data": {
-    "id": string;
-    "maskedCardNumber": string;
-    "sensetive": {
-      "number": string;
-      "expire": string;
-      "cvc": string;
-    },
-    "currency": string;
-    "status": string;
-    "externalCardId": string;
-    "balance": {
-      "value": number;
-      "currency": string;
-    }
-  }
-}
-```
-
-- `prepaidCards.getTransactions(cardId: string, params?)` — get transactions for a card (paginated)
+- `cards.getTransactions(cardId: string, params?)` — get transactions for a card (paginated)
 
 **Params**
 
@@ -326,7 +339,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.getSensitive(cardId: string)` — retrieve sensitive card data (card number, expiration date, and CVC)
+- `cards.getSensitive(cardId: string)` — retrieve sensitive card data (card number, expiration date, and CVC)
 
 **Response**
 
@@ -341,7 +354,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.freeze(cardId: string)` — freeze a card
+- `cards.freeze(cardId: string)` — freeze a card
 
 **Response**
 
@@ -352,7 +365,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.unfreeze(cardId: string)` — unfreeze a card
+- `cards.unfreeze(cardId: string)` — unfreeze a card
 
 **Response**
 
@@ -363,7 +376,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.delete(cardId: string)` — delete a card
+- `cards.deleteCard(cardId: string)` — delete a card
 
 ```ts
 {
@@ -372,7 +385,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.updateEmail(cardId: string, payload)` — update email associated with a card
+- `cards.updateEmail(cardId: string, payload)` — update email associated with a card
 
 **Payload**
 
@@ -391,7 +404,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.updatePhoneNumber(cardId: string, payload)` — update phone number associated with a card
+- `cards.updatePhoneNumber(cardId: string, payload)` — update phone number associated with a card
 
 **Payload**
 
@@ -410,7 +423,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.topUp(cardId: string, payload)` — top up a card
+- `cards.topUp(cardId: string, payload)` — top up a card
 
 **Payload**
 
@@ -429,7 +442,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.setPin(cardId: string, payload)` — set card PIN
+- `cards.setPin(cardId: string, payload)` — set card PIN
 
 **Payload**
 
@@ -448,13 +461,13 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.withdrawFunds(cardId: string, payload)` — withdraw funds from a card
+- `cards.withdrawFunds(cardId: string, payload)` — withdraw funds from a card
 
 **Payload**
 
 ```ts
 {
-  "payload": string;
+  "amount": number;
 }
 ```
 
@@ -467,13 +480,13 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.approveTransaction(cardId: string, payload)` — approve a transaction for a card
+- `cards.updateVirtualCardArt(cardId: string, payload)` - updates the design (art) of a virtual card
 
 **Payload**
 
 ```ts
 {
-  "actionId": string;
+  "cardArtId": string;
 }
 ```
 
@@ -482,20 +495,11 @@ The SDK provides card management through three modules:
 ```ts
 {
   "status": string;
-  "message": string;
+  "data": {}
 }
 ```
 
-- `prepaidCards.generateTopUpAddress(cardId: string, params?)` — generate a crypto top-up address for a card
-
-**Params**
-
-```ts
-{
-  "currency": string;
-  "network": string;
-}
-```
+- `cards.getAvailableCardTypes()` - returns active card types available for the current user
 
 **Response**
 
@@ -503,20 +507,20 @@ The SDK provides card management through three modules:
 {
   "status": string;
   "data": {
-    "address": string;
-    "network": string;
-    "currency": string;
-    "qrImage": string;
-    "amount": {
-      "min": number;
-      "max": number;
-      "fee": number;
-    }
+    "types": [
+      {
+        "id": string;
+        "name": string;
+        "cardCurrency": string;
+        "price": string;
+        "brand": "visa" | (string & {});
+      }
+    ];
   }
 }
 ```
 
-- `prepaidCards.getSpendingLimits(cardId: string)` — get spending limits
+- `cards.getSpendingLimits(cardId: string)` — get spending limits
 
 **Response**
 
@@ -554,7 +558,7 @@ The SDK provides card management through three modules:
 }
 ```
 
-- `prepaidCards.setSpendingLimits(cardId: string, payload)` — set spending limits
+- `cards.setSpendingLimits(cardId: string, payload)` — set spending limits
 
 **Payload**
 
@@ -617,6 +621,21 @@ The SDK provides card management through three modules:
 }
 ```
 
+- `budgetCards.getSensitive(cardId: string)`
+
+**Response**
+
+```ts
+{
+  "status": string;
+  "data": {
+      "number": string;
+      "expire": string;
+      "cvc": string;
+    }
+}
+```
+
 - `budgetCards.freeze(cardId: string)` — freeze a budget card
 
 **Response**
@@ -657,7 +676,14 @@ The SDK provides card management through three modules:
 ```ts
 {
   "status": string;
-  "message": string;
+  "data": {
+      "id": BudgetCardId;
+      "maskedCardNumber": string;
+      "currency": string;
+      "status": string;
+      "externalCardId": string;
+      "sensitive": BudgetCardSensitive;
+    };
 }
 ```
 
@@ -870,26 +896,43 @@ Customers are managed through the `client.customers` module.
 }
 ```
 
-- `customers.createIndividual(payload)` — create an individual customer
+- `customers.create(payload)` — create an customer
 
 **Payload**
 
 ```ts
 {
-  "type": string;
-  "firstName": string;
-  "lastName": string;
-  "birthDate": string;
-  "nationality": string;
-  "address": {
-    "line1": string;
-    "city": string;
-    "state": string;
-    "country": string;
-    "zipCode": string;
-  },
-  "email": string;
-  "phone": string;
+  "type": "individual" | "business";
+  "level"?: "minimum" | "basic" | "advanced";
+  "sumsubShareToken"?: string;
+  "firstName"?: string;
+  "lastName"?: string;
+  "birthDate"?: string;
+  "nationality"?: string; // ISO-3 country code
+  "nationalId"?: string;
+  "address"?: {
+    "line1"?: string;
+    "line2"?: string;
+    "city"?: string;
+    "state"?: string;
+    "countryCode"?: string;
+    "postalCode"?: string;
+  };
+  "phone"?: string;
+  "email"?: string;
+  "identityDocuments"?: {
+    "type": "passport" | "driverLicense" | "idCard" | "residencePermit";
+    "issuingCountry"?: string;
+    "imageFront"?: string;
+    "imageBack"?: string;
+    "contentType"?: string;
+  };
+  "otherDocuments"?: {
+    "type": "proofOfAddress";
+    "issuingCountry"?: string;
+    "content"?: string;
+    "contentType"?: string;
+  };
 }
 ```
 
@@ -900,54 +943,20 @@ Customers are managed through the `client.customers` module.
   "status": string;
   "data": {
     "id": string;
-    "type": string;
+    "type": "individual" | "business";
     "status": string;
     "individualData": {
-      "firstName": string;
-      "lastName": string;
-      "nationality": string;
-      "birthDate": string;
-      "nationalId": string;
-      "address": {
-        "line1": string;
-        "line2": string;
-        "state": string;
-        "city": string;
-        "country": string;
-        "zipCode": string;
-      },
-      "phone": string;
-      "email": string;
-    },
-    "rejectionReasons": string[];
-    "canResubmit": boolean;
-  }
-}
-```
-
-- `customers.createViaSumsub(payload)` — create an individual customer and initiate Sumsub KYC (optionally using `sumsubShareToken`)
-
-**Payload**
-
-```ts
-{
-  "type": string;
-  "sumsubShareToken": string;
-}
-```
-
-**Response**
-
-```ts
-{
-  "status": string;
-  "data": {
-    "id": string;
-    "type": string;
-    "status": string;
+      "level"?: string;
+      "firstName"?: string;
+      "lastName"?: string;
+      "nationality"?: string;
+      "birthDate"?: string;
+      "phone"?: string;
+      "email"?: string;
+    };
     "sumsub": {
       "url": string;
-    }
+    };
   }
 }
 ```
@@ -975,6 +984,16 @@ Customers are managed through the `client.customers` module.
   }
 }
 ```
+
+- `customers.deleteCustomer(customerId: string)` — deletes a customer that belongs to the current user.
+
+- `customers.listCustomerQuestionnaires(customerId: string)` — returns questionnaires available for the customer and whether each one is completed.
+
+- `customers.customerQuestionnaireDetails(customerId: string, questionnaireId: string, payload)` — Returns questionnaire questions and completion status for the customer.
+
+- `customers.submitQuestionnaireAnswers(customerId: string, questionnaireId: string, payload)` — Submits questionnaire answers for the customer.
+
+- `customers.getSumsubToken(customerId: string, payload)` — Generates a reusable Sumsub share token for the specified customer and client ID.
 
 ## Virtual Accounts
 
@@ -1069,6 +1088,14 @@ Virtual accounts are managed through the `client.virtualAccounts` module.
   }
 }
 ```
+
+- `virtualAccounts.getSupportedCurrencies()` — Returns the list of supported currencies, countries, and payment rails for virtual accounts.
+
+- `virtualAccounts.getAccounts(customerId: string)` — Lists customer’s virtual accounts.
+
+- `virtualAccounts.getActivity(customerId: string, virtualAccountId: string, params)` — Returns activity history for a specific virtual account.
+
+- `virtualAccounts.close(customerId: string, virtualAccountId: string)` — Closes a specific virtual account.
 
 ## Disputes
 
@@ -1539,4 +1566,164 @@ that are often required when working with payments and banking data.
     "swift": string;
   }
 }
+```
+
+- `utils.searchAirports(params)` — Searches airports by query string.
+
+**Params**
+
+```ts
+{
+  "query": string;
+}
+```
+
+**Response**
+
+```ts
+{
+  "status": string;
+  "data": {
+    "results": AirportsResponse[];
+  }
+}
+```
+
+**Types**
+
+```ts
+AirportsResponse = {
+  name: string;
+  city: string;
+  country: string;
+  codes: {
+    iata: string;
+    icao: string;
+  };
+};
+```
+
+- `utils.findNearbyAirports(params)` — Finds nearby airports by latitude and longitude.
+
+**Params**
+
+```ts
+{
+  "latitude": string;
+  "longitude": string;
+}
+```
+
+**Response**
+
+```ts
+{
+  "status": string;
+  "data": {
+    "results": (AirportsResponse & {
+      "distance": { value: number; unit: string };
+      "relevance": number;
+    })[];
+  }
+}
+```
+
+**Types**
+
+```ts
+AirportsResponse = {
+  name: string;
+  city: string;
+  country: string;
+  codes: {
+    iata: string;
+    icao: string;
+  };
+};
+```
+
+- `utils.flightInfo(params)` — Retrieves flight information by flight number and date.
+
+**Params**
+
+```ts
+{
+  "flightNumber": string;
+  "date": string;
+}
+```
+
+**Response**
+
+```ts
+{
+  "status": string;
+  "data": {
+    "status": string;
+    "number": string;
+    "date": string;
+    "flightType": FlightType;
+    "departure": Departure;
+    "arrival": Arrival;
+    "duration": number;
+    "airline": Airline;
+    "flightEquipment": FlightEquipment;
+    "codeshares": Codeshare[];
+  }
+}
+```
+
+**Types**
+
+```ts
+FlightType = "scheduled-passenger-normal-service" | (string & {});
+
+Departure = {
+  iataCode: string;
+  timestamp: string;
+  terminal: string | null;
+  departureGate: string | null;
+};
+
+Arrival = {
+  iataCode: string;
+  timestamp: string;
+  terminal: string | null;
+  arrivalGate: string | null;
+  baggageClaim: string | null;
+};
+
+Airline = {
+  iataCode: string;
+  icaoCode: string;
+  businessName: string;
+  commonName: string | null;
+  logoUrl: string;
+};
+
+FlightEquipment = {
+  tailNumber: string | null;
+  actualIataCode: string | null;
+  scheduledIataCode: string | null;
+  equipments: Equipment[];
+};
+
+Equipment = {
+  iata: string;
+  name: string;
+  details: EquipmentDetails;
+};
+
+EquipmentDetails = {
+  turboProp: boolean;
+  jet: boolean;
+  widebody: boolean;
+  regional: boolean;
+};
+
+Codeshare = {
+  fsCode: string;
+  flightNumber: string;
+  relationship: string;
+};
 ```

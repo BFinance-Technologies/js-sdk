@@ -108,3 +108,5 @@ typings/
 
 # Github
 .github/
+
+dist

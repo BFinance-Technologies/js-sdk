@@ -2,12 +2,20 @@ import type { ApiResponse, Id, MessageResponse } from "../../types";
 
 export type BudgetCardId = Id;
 
+export type IssueCardConfiguration = {
+  displayName?: string;
+  address?: string;
+};
+
 export type IssueBudgetCardRequest = {
   typeId: string;
   budgetId: string;
   firstName: string;
   lastName: string;
   label?: string;
+  externalId?: string;
+  customerId?: string;
+  configuration?: IssueCardConfiguration;
 };
 
 export type BudgetCardSensitive = {
@@ -32,12 +40,7 @@ export type SetBudgetCardPinRequest = { pin: string };
 export type UpdateBudgetCardEmailRequest = { email: string };
 export type UpdateBudgetCardPhoneRequest = { phone: string };
 
-export type VelocityLimitType =
-  | "DAY"
-  | "WEEK"
-  | "MONTH"
-  | "LIFETIME"
-  | (string & {});
+export type VelocityLimitType = "DAY" | "WEEK" | "MONTH" | "LIFETIME";
 
 export type SetVelocityLimitsRequest = {
   type: VelocityLimitType;
